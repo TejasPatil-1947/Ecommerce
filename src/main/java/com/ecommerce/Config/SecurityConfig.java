@@ -1,6 +1,5 @@
 package com.ecommerce.Config;
 
-import com.ecommerce.Entity.CustomUserDetails;
 import com.ecommerce.Service.Impl.CustomUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
