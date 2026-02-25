@@ -26,6 +26,8 @@ public class Product {
 
     private double price;
 
+    private String imageUrl;
+
     private int quantity;
 
     @OneToMany(mappedBy = "product")
@@ -35,4 +37,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderItem> orderItems = new ArrayList<>();
+
+    @ManyToOne
+    private Category category;
 }

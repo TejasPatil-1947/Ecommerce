@@ -1,0 +1,53 @@
+ STEP 1: Implement Cart Features
+
+Create APIs:
+
+Add product to cart
+
+Update quantity
+
+Remove product from cart
+
+View cart with total amount
+
+This is the first major logic part.
+
+STEP 2: Create "Place Order" API
+
+This is very important.
+
+When user clicks "Place Order":
+
+Logic:
+
+Get cart by user
+
+Create new Order
+
+For each CartItem:
+
+Create OrderItem
+
+Calculate total
+
+Save Order
+
+Clear Cart
+
+This is core eCommerce logic
+
+ STEP 3: Order Status Flow
+
+Your Status enum should look like:
+
+PENDING
+CONFIRMED
+SHIPPED
+DELIVERED
+CANCELLED
+
+Create API to:
+
+Update order status (admin only)
+
+View user orders
