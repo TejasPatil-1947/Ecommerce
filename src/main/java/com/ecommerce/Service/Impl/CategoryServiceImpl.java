@@ -44,20 +44,34 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByNameContaining(name);
     }
 
-    @Override
+
+
     @Transactional
     public void deleteCategory(Long oldCategoryId, Long newCategoryId) {
-        Category oldCategory
-                = categoryRepository.findById(oldCategoryId).orElseThrow(() -> new RuntimeException("Old category not found"));
-        Category newCategoryNotFound
-                = categoryRepository.findById(newCategoryId).orElseThrow(() -> new RuntimeException("New category not found"));
 
-        List<Product> byCategory = productRepository.findByCategory(oldCategory);
-        for(Product product: byCategory){
-            product.setCategory(newCategoryNotFound);
+        Category oldCategory = categoryRepository.findById(oldCategoryId)
+                .orElseThrow(() -> new RuntimeException("Old category not found"));
+
+        Category newCategory = categoryRepository.findById(newCategoryId)
+                .orElseThrow(() -> new RuntimeException("New category not found"));
+
+        List<Product> products = productRepository.findByCategory(oldCategory);
+
+        for (Product product : products) {
+            product.setCategory(newCategory);
         }
 
+        productRepository.saveAll(products);
+
         oldCategory.setStatus(false);
+
         categoryRepository.save(oldCategory);
+    }
+
+    @Override
+    public Category activateCategory(Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category with id not found"));
+        category.setStatus(true);
+        return categoryRepository.save(category);
     }
 }

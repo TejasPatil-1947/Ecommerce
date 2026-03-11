@@ -1,6 +1,7 @@
 package com.ecommerce.Controller;
 
 import com.ecommerce.Entity.User;
+import com.ecommerce.Repository.UserRepository;
 import com.ecommerce.Request.LoginRequest;
 import com.ecommerce.Service.Impl.CustomUserDetailsService;
 import com.ecommerce.Service.Impl.JwtService;
@@ -11,10 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -31,6 +30,9 @@ public class AuthController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     @PostMapping("/register")
@@ -51,6 +53,16 @@ public class AuthController {
         }else{
             return new ResponseEntity<>("Unauthorized user",HttpStatus.UNAUTHORIZED);
         }
+    }
+    @GetMapping("/currentUser")
+    public ResponseEntity<?> getCurrentlyLoggedInUser(Authentication authentication){
+        if(authentication == null){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+        }
+        String email = authentication.getName();
+        User user =userRepository.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("Invalid email, user not found"));
+        return ResponseEntity.ok(user);
+
     }
 
 }

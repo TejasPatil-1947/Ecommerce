@@ -31,7 +31,7 @@ public class Category {
 
     private LocalDateTime updatedAt;
 
-    private boolean status = true;
+    private Boolean status = true;
 
     @OneToMany(mappedBy = "category")
     @JsonIgnore

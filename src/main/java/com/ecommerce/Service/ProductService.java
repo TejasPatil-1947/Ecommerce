@@ -8,7 +8,7 @@ public interface ProductService {
 
     Product createProduct(Long categoryId,Product product);
 
-    Product updateProduct(Long id, Product product);
+    Product updateProduct(Long pId, Long cId, Product product);
 
     Product getProductById(Long id);
 
@@ -17,4 +17,6 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     List<Product> getProductsByCategory(Long categoryId);
+
+    List<Product> findByCategoryName(String name);
 }

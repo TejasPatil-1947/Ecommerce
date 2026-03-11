@@ -25,17 +25,24 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(category);
         return productRepository.save(product);
     }
-
     @Override
-    public Product updateProduct(Long id, Product product) {
-        Product exProduct = productRepository.findById(id).orElseThrow(() -> new
-                RuntimeException("Product with id not found:  " + id));
-        exProduct.setName(product.getName());
-        exProduct.setPrice(product.getPrice());
-        exProduct.setDescription(product.getDescription());
-        exProduct.setQuantity(product.getQuantity());
+    public Product updateProduct(Long pId, Long cId, Product product) {
 
-        return productRepository.save(exProduct);
+        Product existingProduct = productRepository.findById(pId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Category category = categoryRepository.findById(cId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setImageUrl(product.getImageUrl());
+        existingProduct.setQuantity(product.getQuantity());
+
+        existingProduct.setCategory(category);
+
+        return productRepository.save(existingProduct);
     }
 
     @Override
@@ -58,5 +65,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> getProductsByCategory(Long categoryId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found with id: " + categoryId));
         return productRepository.findByCategory(category);
+    }
+
+    @Override
+    public List<Product> findByCategoryName(String name) {
+        return productRepository.findByCategoryName(name);
     }
 }

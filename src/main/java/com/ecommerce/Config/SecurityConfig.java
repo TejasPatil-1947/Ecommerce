@@ -38,14 +38,19 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**")
+                        auth.requestMatchers("/auth/**","/order/verify")
                                 .permitAll()
+                                .requestMatchers("/product/create/**","/product/update/**","/product/delete/**",
+                                "/order/allOrders","/order/update/**","/order/delete/**","/user/delete/**",
+                                        "/category/create"
+                                ).hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors->cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {

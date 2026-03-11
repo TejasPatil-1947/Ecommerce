@@ -5,6 +5,7 @@ import com.ecommerce.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +17,22 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/create/{cId}")
     public ResponseEntity<Product> createProduct(@PathVariable Long cId, @RequestBody Product product){
         return new ResponseEntity<>(productService.createProduct(cId,product), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{pId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long pId, @RequestBody Product newProduct){
-        return new ResponseEntity<>(productService.updateProduct(pId,newProduct),HttpStatus.OK);
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/update/{pId}/{cId}")
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Long pId,
+            @PathVariable Long cId,
+            @RequestBody Product product){
+
+        Product updatedProduct = productService.updateProduct(pId, cId, product);
+
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -36,8 +45,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
+        System.out.println("INSIDE DELETE...............................................");
         productService.deleteProduct(id);
         return new ResponseEntity<>("Product deleted successfully ",HttpStatus.OK);
     }
@@ -45,6 +56,11 @@ public class ProductController {
     @GetMapping("/category/{id}")
     public ResponseEntity<List<Product>> getByCategory(@PathVariable Long id){
         return new ResponseEntity<>(productService.getProductsByCategory(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/name")
+    public ResponseEntity<List<Product>> findByCategoryName(@RequestParam String name){
+        return new ResponseEntity<>(productService.findByCategoryName(name),HttpStatus.OK);
     }
 
 

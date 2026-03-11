@@ -12,31 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class WishList {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User user;
+    private LocalDate addedDate;
 
-    private LocalDate date;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    private double totalAmount;
-
-    @OneToMany(mappedBy = "orders")
-    @JsonIgnore
-    private List<OrderItem> orderItems = new ArrayList<>();
-
-    @OneToOne(mappedBy = "orders")
-    @JsonIgnore
-    private Payment payment;
-
+    @OneToMany
+    private List<Product> products = new ArrayList<>();
 }

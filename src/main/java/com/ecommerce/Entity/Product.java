@@ -40,4 +40,8 @@ public class Product {
 
     @ManyToOne
     private Category category;
+
+    @ManyToOne
+    @JsonIgnore
+    private WishList wishList;
 }
