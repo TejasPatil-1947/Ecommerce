@@ -24,6 +24,10 @@ public class WishList {
 
     private LocalDate addedDate;
 
+
+    @OneToOne
+    private User user;
+
     @OneToMany
     private List<Product> products = new ArrayList<>();
 }

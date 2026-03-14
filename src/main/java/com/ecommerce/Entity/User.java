@@ -47,6 +47,10 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private WishList wishList;
+
     @PrePersist
     protected void setCreatedAt(){
         this.createdAt = LocalDateTime.now();
