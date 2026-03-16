@@ -1,8 +1,8 @@
 package com.ecommerce.Config;
 
-
 import com.ecommerce.Service.Impl.CustomUserDetailsService;
 import com.ecommerce.Service.Impl.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +25,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -36,14 +37,21 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String email = null;
 
-        // If no Authorization header → just continue request
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
         token = authHeader.substring(7);
-        email = jwtService.extractEmail(token);
+
+        try {
+            email = jwtService.extractEmail(token);
+        }
+        catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT Token Expired");
+            return;
+        }
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
@@ -68,34 +76,4 @@ public class JwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        String authHeader = request.getHeader("Authorization");
-//
-//        String token = null;
-//        String email = null;
-//
-//        if(authHeader != null && authHeader.startsWith("Bearer ")){
-//            token = authHeader.substring(7);
-//            email = jwtService.extractEmail(token);
-//        }else{
-//            filterChain.doFilter(request,response);
-//        }
-//
-//        if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
-//            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-//            if(userDetails != null && jwtService.isTokenValid(token,userDetails)){
-//                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-//                    userDetails,null,userDetails.getAuthorities()
-//                );
-//                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-//                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-//            }
-//
-//        }
-//        filterChain.doFilter(request,response);
-//    }
-
-
 }
