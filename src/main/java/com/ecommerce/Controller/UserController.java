@@ -20,9 +20,6 @@ public class UserController {
     private UserService userService;
 
 
-
-
-
     @GetMapping("/{userId}")
     public ResponseEntity<User> findByUserId(@PathVariable Long userId){
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK  );

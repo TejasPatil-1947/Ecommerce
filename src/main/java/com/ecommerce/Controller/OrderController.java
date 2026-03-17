@@ -28,7 +28,13 @@ public class OrderController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/cancel/{orderId}")
+    public ResponseEntity<Orders> cancelOrder(@PathVariable Long orderId) {
 
+        Orders order = orderService.cancelOrder(orderId);
+
+        return ResponseEntity.ok(order);
+    }
     @PostMapping("/verify")
     public ResponseEntity<?> verifyPayment(@RequestParam Long orderId,
                                            @RequestParam String razorpayPaymentId,

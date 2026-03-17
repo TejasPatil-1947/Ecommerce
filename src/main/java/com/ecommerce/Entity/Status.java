@@ -1,5 +1,5 @@
 package com.ecommerce.Entity;
 
 public enum Status {
-    PLACED, SHIPPED, DELIVERED, CANCELLED,CONFIRMED
+    PLACED,PENDING, SHIPPED, DELIVERED, CANCELLED,CONFIRMED
 }

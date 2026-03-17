@@ -2,6 +2,7 @@ package com.ecommerce.Service;
 
 import com.ecommerce.Entity.Orders;
 import com.ecommerce.Entity.Status;
+import com.razorpay.Order;
 import com.razorpay.RazorpayException;
 import org.json.JSONObject;
 
@@ -24,4 +25,6 @@ public interface OrderService {
                                 String razorpayPaymentId,
                                 String razorpayOrderId,
                                 String razorpaySignature);
+
+    Orders cancelOrder(Long orderId);
 }

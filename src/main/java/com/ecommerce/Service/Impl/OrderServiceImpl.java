@@ -192,4 +192,19 @@
                 return "Payment Failed";
             }
         }
+
+        @Override
+        public Orders cancelOrder(Long orderId) {
+
+            Orders order = ordersRepository.findById(orderId)
+                    .orElseThrow(() -> new RuntimeException("Order not found"));
+
+            if(order.getStatus().equals("SHIPPED") || order.getStatus().equals("DELIVERED")) {
+                throw new RuntimeException("Order cannot be cancelled after shipping");
+            }
+
+            order.setStatus(Status.CANCELLED);
+
+            return ordersRepository.save(order);
+        }
     }
