@@ -17,4 +17,8 @@ public interface UserService {
     User getUserByEmail(String email);
 
     void deleteUser(Long userId);
+
+    User deactivateUser(Long userId);
+
+    User activateUser(Long userId);
 }

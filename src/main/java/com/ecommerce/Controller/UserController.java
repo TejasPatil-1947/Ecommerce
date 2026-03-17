@@ -46,6 +46,17 @@ public class UserController {
         return new ResponseEntity<>("user deleted successfully",HttpStatus.OK);
     }
 
+    @PutMapping("/deactivateUser/{userId}")
+    public ResponseEntity<User> deactivateUser(@PathVariable Long userId){
+        return new ResponseEntity<>(userService.deactivateUser(userId),HttpStatus.OK);
+    }
+
+    @PutMapping("/activateUser/{userId}")
+    public ResponseEntity<User> activateUser(@PathVariable Long userId){
+        return new ResponseEntity<>(userService.activateUser(userId),HttpStatus.OK);
+    }
+
+
 
 
 

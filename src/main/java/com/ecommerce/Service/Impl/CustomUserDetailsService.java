@@ -19,6 +19,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with name not found: " + email));
 
+//        if(user.getStatus().equals("INACTIVE")){
+//            throw new RuntimeException("Account is deactivated");
+//        }
         return org.springframework.security.core.userdetails.User
                 .builder()
                 .username(user.getEmail())

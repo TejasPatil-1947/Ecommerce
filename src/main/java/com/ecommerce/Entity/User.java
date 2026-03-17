@@ -35,6 +35,8 @@ public class User {
 
     private LocalDateTime createdAt;
 
+    private String status = "ACTIVE";
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Orders> orders = new ArrayList<>();

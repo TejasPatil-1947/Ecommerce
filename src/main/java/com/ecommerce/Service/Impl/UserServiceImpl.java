@@ -62,4 +62,18 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         userRepository.delete(user);
     }
+
+    @Override
+    public User deactivateUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        user.setStatus("INACTIVE");
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User activateUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        user.setStatus("ACTIVE");
+        return userRepository.save(user);
+    }
 }
