@@ -1,6 +1,7 @@
 package com.ecommerce.Entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +37,7 @@ public class Orders {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToOne(mappedBy = "orders")
-    @JsonIgnore
+    @JsonManagedReference
     private Payment payment;
 
 }

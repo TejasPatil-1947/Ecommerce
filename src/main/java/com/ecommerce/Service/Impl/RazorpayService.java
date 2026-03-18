@@ -37,6 +37,9 @@ public class RazorpayService {
         Order order = client.Orders.create(options);
         return new JSONObject(order.toString()); // convert to JSONObject
     }
+    public RazorpayClient getClient() throws RazorpayException {
+        return new RazorpayClient(key, secret);
+    }
     public String getKeyId() {
         return key;
     }

@@ -1,5 +1,6 @@
 package com.ecommerce.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,12 +24,14 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Orders orders;
 
     private String razorpayOrderId;
     private String razorpayPaymentId;
     private String razorpaySignature;
 
+    private String razorpayRefundId;
     private double amount;
 
     @Enumerated(EnumType.STRING)
